@@ -9,7 +9,8 @@ class Login extends Component {
       }
      }
 
-    handleClick() {
+    handleClick(event) {
+        event.preventDefault();
         return
     }
 
@@ -23,14 +24,14 @@ class Login extends Component {
                     <input type="text" 
                         id="username" 
                         placeholder="Username" 
-                        onChange = {(event,newValue) => this.setState({username:newValue})}>
+                        onChange = {(event) => this.setState({username:event.target.value})}>
                     </input>
                     <label>Password : </label>
                     <input 
                         type="text" 
                         id="password" 
                         placeholder="Password" 
-                        onChange = {(event,newValue) => this.setState({password:newValue})}>
+                        onChange = {(event) => this.setState({password:event.target.value})}>
                     </input>
                     <button 
                         type="submit" 
