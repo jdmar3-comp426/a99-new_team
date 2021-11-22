@@ -1,5 +1,5 @@
 import {Component} from "react";
-//import Login './Login';
+import Login from './login';
 
 class LandingPage extends Component {
 
@@ -23,7 +23,7 @@ class LandingPage extends Component {
     render(){
         if(this.state.logIn===true && this.state.register===false){
             return (<div>
-                <p>Add Login Frame here</p>
+                <Login></Login>
                 <button  onClick={this.handleRegister.bind(this)}>Register</button>
                 <button onClick={this.handleHome.bind(this)}>Home</button>
             </div>);
