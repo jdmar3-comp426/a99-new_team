@@ -1,5 +1,6 @@
 import {Component} from "react";
 import Login from './login';
+import Register from "./registerClass";
 
 class LandingPage extends Component {
 
@@ -30,7 +31,7 @@ class LandingPage extends Component {
         }
         else if(this.state.logIn===false && this.state.register===true){
             return (<div>
-                <p>Add Register Frame here</p>
+                <Register></Register>
                 <button  onClick={this.handleLogIn.bind(this)}>Login</button>
                 <button onClick={this.handleHome.bind(this)}>Home</button>
             </div>);
