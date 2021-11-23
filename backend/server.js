@@ -61,7 +61,7 @@ app.use(function(req, res){
 app.post("/verifyLogin", (req,res)=>{
 	const row = db.prepare("SELECT * FROM userinfo WHERE user= ? AND pass = ?").get(req.body.user, req.body.pass);
 	//check stmt if there is a match and send response accordingly
-	if (row.length > 1) {
+	if (row.length >= 1) {
 		res.status(201).json({valid: true});
 	} else {
 		res.status(401).json({valid: false});
