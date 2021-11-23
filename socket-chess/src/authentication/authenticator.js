@@ -3,7 +3,7 @@ import axios from 'axios';
 class Authenticator{
 
     constructor() {
-        this.authenticated = False;
+        this.authenticated = false;
     }
     LogIn(username, password)
     {
@@ -14,7 +14,7 @@ class Authenticator{
           })
           .then(function (response) {
             console.log(response);
-            this.authenticated = True;
+            this.authenticated = true;
           })
           .catch(function (error) {
             console.log(error);
