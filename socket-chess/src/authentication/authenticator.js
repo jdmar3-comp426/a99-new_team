@@ -8,7 +8,7 @@ class Authenticator{
     LogIn(username, password)
     {
 
-        axios.post('/user', {
+        axios.post('/verifyLogin', {
             user: username,
             pass: password
           })
