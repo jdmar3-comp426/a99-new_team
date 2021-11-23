@@ -46,7 +46,7 @@ render() {
     return (
 
    <div>
-       <p>Register</p>
+       <h1>Register</h1>
     <form>  
       
     <label> Nickname </label>         
@@ -63,7 +63,7 @@ render() {
     <label>Re-type password:</label>  
     <input type="Password" id="repass" name="repass" onChange={(event) => this.setState({'repassword':event.target.value})} onBlur={this.handleChangepass}/> 
     
-    { !this.state.repeatpass && <p>passwords does not match!</p>}
+    { !this.state.repeatpass && this.state.password!=='' && <p>passwords does not match!</p>}
     
     <button type="submit"  onClick={(event) => this.handleRegister(event)}>Submit</button> 
     </form>  
