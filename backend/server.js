@@ -1,10 +1,13 @@
+// Define app using express
 var express = require("express")
 var app = express()
 // Require database SCRIPT file
+var cors= require("cors");
 var db= require("./database.js");
 // Require md5 MODULE
 var md5=require("md5")
 // Make Express use its own built-in body parser
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -52,20 +55,22 @@ app.delete("/app/delete/:id",(req,res)=>{
 	res.status(201).json({"message":"1 record deleted: ID %ID% (200)".replace("%ID%",req.params.id)});
 })
 
-// Default response for any other request
-app.use(function(req, res){
-	res.json({"message":"Endpoint not found. (404)"});
-    res.status(404);
-})
-
-app.post("/verifyLogin", (req,res)=>{
+app.post("/app/verifyLogin", (req,res)=>{
+	console.log(req);
 	const row = db.prepare("SELECT * FROM userinfo WHERE user= ? AND pass = ?").get(req.body.user, req.body.pass);
 	//check stmt if there is a match and send response accordingly
-	if (row.length >= 1) {
+    console.log(row);
+	if (row) {
 		res.status(201).json({valid: true});
 	} else {
 		res.status(401).json({valid: false});
 	}
 
-})
-;
+});
+
+
+// Default response for any other request
+app.use(function(req, res){
+	res.json({"message":"Endpoint not found. (404)"});
+    res.status(404);
+});
