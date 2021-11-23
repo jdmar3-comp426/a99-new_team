@@ -6,7 +6,6 @@ class Authenticator{
         this.authenticated = False;
     }
     LogIn(username, password)
-    //userPass is an object with username and password
     {
 
         axios.post('/user', {
