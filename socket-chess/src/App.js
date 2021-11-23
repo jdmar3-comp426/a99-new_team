@@ -3,6 +3,8 @@ import LandingPage from './components/landing'
 import {BrowserRouter as Router,Routes,Route,Link} from "react-router-dom";
 import Login from './components/login';
 import Register from './components/registerClass';
+import ProtectedRoute from './components/protectedroute';
+import DashBoard from './components/dashboard';
 function App() {
   return (
       <Router>
@@ -24,6 +26,8 @@ function App() {
 
           <Route exact path="/register" element={<Register></Register>}>
           </Route>
+
+          <Route exact path = '/private-dashboard' element={<ProtectedRoute><DashBoard></DashBoard></ProtectedRoute>}></Route>
 
         </Routes>
       </Router>

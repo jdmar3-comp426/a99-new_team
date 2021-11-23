@@ -5,22 +5,36 @@ class Authenticator{
     constructor() {
         this.authenticated = false;
     }
-    LogIn(username, password)
-    {
 
-        axios.post('/verifyLogin', {
-            user: username,
-            pass: password
+    async LogIn(loginInfo, callBack)
+    {
+      console.log(loginInfo);
+      // let axiosConfig = {
+      //   headers: {
+      //       'Content-Type': 'application/json',
+      //   }
+      // };
+        console.log("sending post");
+        const response = await axios.post('http://localhost:5000/app/verifyLogin', {
+            user: loginInfo.username,
+            pass: loginInfo.password
           })
-          .then(function (response) {
-            console.log(response);
-            this.authenticated = true;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+          
+          if(response.data.valid){
+            this.authenticated=true;
+            localStorage.setItem('userName',loginInfo.username);
+          }
+          else{
+            this.authenticated=false;
+          }
+
+          callBack()
     }
-    LogOut(){}
+    LogOut(callBack){
+      this.authenticated=false;
+      localStorage.removeItem('userName');
+      callBack();
+    }
     isAuthenticated(){
         return this.authenticated;
     }
