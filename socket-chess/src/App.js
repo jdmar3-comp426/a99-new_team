@@ -7,6 +7,8 @@ import ProtectedRoute from './components/protectedroute';
 import DashBoard from './components/dashboard';
 import { useState } from "react";
 import 'semantic-ui-css/semantic.min.css';
+import Game from "./components/game";
+
 function App() {
   const [isActive, setActive] = useState("landing");
 
@@ -33,6 +35,7 @@ function App() {
 
           <Route exact path = '/private-dashboard' element={<ProtectedRoute><DashBoard></DashBoard></ProtectedRoute>}></Route>
 
+          <Route exact path = '/new-game/' element={<Game/>}></Route>
         </Routes>
       </Router>
   );

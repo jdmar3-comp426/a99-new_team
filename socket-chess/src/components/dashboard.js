@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import auth from "../authentication/authenticator";
 import { Button } from 'semantic-ui-react';
-import ChessBoard from "./ChessBoard";
+
 
 
 
@@ -12,6 +12,10 @@ function DashBoard(props){
 
     function handleClick(){
         auth.LogOut(()=>{navigate('/')});
+    }
+
+    function handleNewGame() {
+        navigate("/new-game")
     }
 
     return (
@@ -27,13 +31,8 @@ function DashBoard(props){
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {2}</h2>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <Button color="green">Click for New Game</Button>
+                <Button color="green" onClick={handleNewGame}>Click for New Game</Button>
             </div>
-            
-            <div>
-                <ChessBoard/>
-            </div>
-            
         </div>
 
         
