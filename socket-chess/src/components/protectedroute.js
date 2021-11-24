@@ -1,5 +1,6 @@
 import {Component } from "react";
 import auth from '../authentication/authenticator'
+import CustomNav from "./navigation";
 //import { Navigate } from "react-router";
 
 class ProtectedRoute extends Component{
@@ -9,8 +10,8 @@ class ProtectedRoute extends Component{
     }
 
     render(){
-        const {children}=this.props;
-        return this.state.authenticated? children: <div><h1>LogIn Failed!</h1></div>//<Navigate to ='/'></Navigate>
+        console.log(this.props);
+        return this.state.authenticated? this.props.children: <div><CustomNav currPage='login'></CustomNav><div><h1>LogIn Failed!</h1></div></div>//<Navigate to ='/'></Navigate>
     }
 }
 

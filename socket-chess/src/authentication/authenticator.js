@@ -15,18 +15,23 @@ class Authenticator{
       //   }
       // };
         console.log("sending post");
-        const response = await axios.post('http://localhost:5000/app/verifyLogin', {
-            user: loginInfo.username,
-            pass: loginInfo.password
-          })
-          
-          if(response.data.valid){
-            this.authenticated=true;
-            localStorage.setItem('userName',loginInfo.username);
-          }
-          else{
+        try{
+          const response = await axios.post('http://localhost:5000/app/verifyLogin', {
+              user: loginInfo.username,
+              pass: loginInfo.password
+            });
+
+            if(response.data.valid){
+              this.authenticated=true;
+              localStorage.setItem('userName',loginInfo.username);
+            }
+            else{
+              this.authenticated=false;
+            }
+        }catch(error){
+          console.log(error);
             this.authenticated=false;
-          }
+        }
 
           callBack()
     }

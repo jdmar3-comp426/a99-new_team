@@ -13,7 +13,13 @@ function Login(props){
     function handleClick(event){
         event.preventDefault();
         if(userName!=='' && password!=='')
-            auth.LogIn({'username':userName, 'password':password},()=>{console.log(this); navigate('/private-dashboard') });
+            auth.LogIn({'username':userName, 'password':password},()=>{
+                console.log(this); 
+                if(auth.isAuthenticated())
+                    navigate('/private-dashboard') 
+                else
+                    alert("Login Failed!")
+            });
         else
             alert("Please enter Username and Password");
     }

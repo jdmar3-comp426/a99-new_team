@@ -1,23 +1,43 @@
 import {Component} from "react";
+import {Navigate} from 'react-router-dom';
 import { Form, Segment, FormGroup, FormField } from "semantic-ui-react";
+import axios from 'axios';
 class Register extends Component{
 constructor(props){
     super(props);
     this.state = {
-        'register':false, 'nickname':'','username':'','password':'','repassword':'','repeatpass':false
+        'register':false, 'nickname':'','username':'','password':'','repassword':'','repeatpass':false, 'uniqueUser':false, 'clickedOnce':false
       }
     this.handleRegister = this.handleRegister.bind(this);
     this.handleChangepass = this.handleChangepass.bind(this);
 }
 handleRegister(event){
     event.preventDefault();
-    if (this.state.repeatpass)
+    if (this.state.repeatpass && this.state.username!=='')
     {
-        this.setState({'register':true});
+        this.setState({'clickedOnce':true});
+        axios.post('http://localhost:5000/app/register', {
+            user: this.state.username,
+            pass: this.state.password,
+            nickname: this.state.nickname
+          }).then((response)=>{
+              console.log(response);
+              console.log(this);
+              if(response.data.valid){
+                this.setState({'register':true});
+                this.setState({'uniqueUser':true});
+              }
+
+          }).catch((error)=>{
+                console.log(error);
+                this.setState({'register':false});
+                this.setState({'uniqueUser':false});
+          });
     }
     else{
+        this.setState({'clickedOnce':false});
         this.setState({'register':false});
-        alert("Cannot Submit!");
+        alert("Cannot Submit! Please recheck username, password fields");
     }
 
 }
@@ -35,14 +55,14 @@ handleChangepass(event) { //validate password
   }
 
 render() {
-    if (this.state.register){
-        return (
-            <div>
-                <p>registered</p>
-            </div>
+    // if (this.state.register){
+    //     return (
+    //         <div>
+    //             <p>registered</p>
+    //         </div>
 
-        );
-    }
+    //     );
+    // }
     
     return (
 
@@ -60,7 +80,6 @@ render() {
                     <FormField width={8}>
                         <label> Username: </label>     
                         <input type="text" name="username" size="15" onChange={(event) => this.setState({'username':event.target.value})}/>
-                        <p>Username is taken!</p> 
                     </FormField>
                 </FormGroup>
                 <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
@@ -76,9 +95,11 @@ render() {
                     </FormField>
                 </FormGroup>
                 
-                { !this.state.repeatpass && this.state.password!=='' && <p>passwords does not match!</p>}
-                
                 <button type="submit" className="ui green button" onClick={(event) => this.handleRegister(event)}>Submit</button> 
+
+                { !this.state.repeatpass && this.state.password!=='' && <p>passwords does not match!</p>}
+                {(this.state.username!=='' && this.state.uniqueUser && this.state.register && this.state.clickedOnce) && <Navigate to='/login'></Navigate>}
+                {(this.state.username!=='' && !this.state.uniqueUser && !this.state.register && this.state.clickedOnce) && <p>Username not unique</p>}
             </Form>  
         </Segment>
     
