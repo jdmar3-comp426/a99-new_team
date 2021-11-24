@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import auth from "../authentication/authenticator";
 import { Button } from 'semantic-ui-react';
+import Chessboard from "chessboardjsx";
 
 
 
@@ -28,6 +29,16 @@ function DashBoard(props){
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Button color="green">Click for New Game</Button>
             </div>
+
+            <Chessboard
+            width={320}
+            id="random"
+            transitionDuration={300}
+            boardStyle={{
+              borderRadius: "5px",
+              boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
+            }}
+          />
         </div>
 
         
