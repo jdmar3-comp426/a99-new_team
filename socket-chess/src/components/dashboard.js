@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import auth from "../authentication/authenticator";
-
+import { Button } from 'semantic-ui-react';
 
 
 
@@ -17,7 +17,20 @@ function DashBoard(props){
         <div>
             <h1>Welcome to Your DashBoard {state.username}</h1>
             <button onClick={handleClick}>Log Out</button>
+
+            <div style={{ textAlign: 'center' }}>
+                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins: {5}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Losses: {2}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: {71}%</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as Black: {3}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {2}</h2>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
+                <Button color="green">Click for New Game</Button>
+            </div>
         </div>
+
+        
     );
 }
 

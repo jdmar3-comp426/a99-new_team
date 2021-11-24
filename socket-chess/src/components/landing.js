@@ -1,14 +1,14 @@
 import {Component} from "react";
-
+import { Icon } from "semantic-ui-react";
 
 
 
 class LandingPage extends Component{
     render(){
         return (
-            <div>
-                <h1>Welcome to Socket Chess!</h1>
-                <p> Need to add some css</p>
+            <div style={{ textAlign: 'center', paddingTop: '20px'}}>
+                    <Icon name="chess" size="massive"></Icon>
+                    <h1>Welcome to Socket Chess!</h1>
             </div>
         );
     }

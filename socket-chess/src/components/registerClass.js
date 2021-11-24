@@ -1,4 +1,5 @@
 import {Component} from "react";
+import { Form, Segment, FormGroup, FormField } from "semantic-ui-react";
 class Register extends Component{
 constructor(props){
     super(props);
@@ -46,27 +47,41 @@ render() {
     return (
 
    <div>
-       <h1>Register</h1>
-    <form>  
-      
-    <label> Nickname </label>         
-    <input type="text" name="nickname" size="15" onChange={(event) => this.setState({'nickname':event.target.value})}/>   
-    <label> username: </label>     
-    <input type="text" name="username" size="15" onChange={(event) => this.setState({'username':event.target.value})}/>
-    <p>username is taken!</p>
-       
-
-
-    <label>Password:</label>
-    <input type="Password" id="pass" name="pass" onChange={(event) => this.setState({'password':event.target.value})}/> 
-     
-    <label>Re-type password:</label>  
-    <input type="Password" id="repass" name="repass" onChange={(event) => this.setState({'repassword':event.target.value})} onBlur={this.handleChangepass}/> 
+       <Segment padded="very" style={{ textAlign: "center", width: "65%", margin: "auto", marginTop: "4rem"}}>
+        <h1 style={{ textAlign: 'center', paddingBottom: "2rem"}}>Register</h1>
+            <Form size="huge">  
+                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                    <FormField width={8}>
+                        <label> Nickname: </label>         
+                        <input type="text" name="nickname" size="15" onChange={(event) => this.setState({'nickname':event.target.value})}/> 
+                    </FormField>
+                </FormGroup>
+                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                    <FormField width={8}>
+                        <label> Username: </label>     
+                        <input type="text" name="username" size="15" onChange={(event) => this.setState({'username':event.target.value})}/>
+                        <p>Username is taken!</p> 
+                    </FormField>
+                </FormGroup>
+                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                    <FormField width={8}>
+                        <label>Password:</label>
+                        <input type="Password" id="pass" name="pass" onChange={(event) => this.setState({'password':event.target.value})}/> 
+                    </FormField>
+                </FormGroup>
+                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                    <FormField width={8}>
+                        <label>Re-type password:</label>  
+                        <input type="Password" id="repass" name="repass" onChange={(event) => this.setState({'repassword':event.target.value})} onBlur={this.handleChangepass}/>  
+                    </FormField>
+                </FormGroup>
+                
+                { !this.state.repeatpass && this.state.password!=='' && <p>passwords does not match!</p>}
+                
+                <button type="submit" className="ui green button" onClick={(event) => this.handleRegister(event)}>Submit</button> 
+            </Form>  
+        </Segment>
     
-    { !this.state.repeatpass && this.state.password!=='' && <p>passwords does not match!</p>}
-    
-    <button type="submit"  onClick={(event) => this.handleRegister(event)}>Submit</button> 
-    </form>  
     </div>
     );}
 

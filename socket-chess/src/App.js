@@ -5,15 +5,19 @@ import Login from './components/login';
 import Register from './components/registerClass';
 import ProtectedRoute from './components/protectedroute';
 import DashBoard from './components/dashboard';
+import { useState } from "react";
+import 'semantic-ui-css/semantic.min.css';
 function App() {
+  const [isActive, setActive] = useState("landing");
+
   return (
       <Router>
         <div>
           <nav>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/login">Log In</Link></li>
-              <li><Link to="/register"> Register</Link></li>
+          <ul className="ui pointing secondary menu">
+              <li className={isActive === "landing" ? "active item" : "item"} onClick={() => setActive("landing")}><Link to="/">Home</Link></li>
+              <li className={isActive === "login" ? "active item" : "item"} onClick={() => setActive("login")}><Link to="/login">Log In</Link></li>
+              <li className={isActive === "register" ? "active item" : "item"} onClick={() => setActive("register")}><Link to="/register"> Register</Link></li>
             </ul>
           </nav>
         </div>

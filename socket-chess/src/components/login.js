@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Form, FormGroup, FormField, Segment } from 'semantic-ui-react';
 import auth from '../authentication/authenticator'
 
 
@@ -19,27 +20,40 @@ function Login(props){
 
     return (
                     <div>
-                        <h1>Login</h1>
-                        <form>
-                            <label>Username : </label>
-                            <input type="text" 
-                                id="username" 
-                                placeholder="Username" 
-                                onChange = {(event) => setUserName(event.target.value)}>
-                            </input>
-                            <label>Password : </label>
-                            <input 
-                                type="text" 
-                                id="password" 
-                                placeholder="Password" 
-                                onChange = {(event) => setPassword(event.target.value)}>
-                            </input>
-                            <button 
-                                type="submit" 
-                                onClick={handleClick}>
-                                Submit
-                            </button>
-                        </form>
+                        <Segment padded="very" style={{ textAlign: "center", width: "65%", margin: "auto", marginTop: "4rem"}}>
+                            <h1 style={{ textAlign: 'center', paddingBottom: "2rem"}}>Login</h1>
+                            <Form size="huge">
+                                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                                    <FormField width={8}>
+                                        <label>Username : </label>
+                                        <input type="text" 
+                                            id="username" 
+                                            placeholder="Username" 
+                                            onChange = {(event) => setUserName(event.target.value)}>
+                                        </input>
+                                    </FormField>
+                                </FormGroup>
+                                <FormGroup style={{ display: 'flex', justifyContent: "center", textAlign: "left"}}>
+                                    <FormField width={8}>
+                                        <label>Password : </label>
+                                        <input 
+                                            type="text" 
+                                            id="password" 
+                                            placeholder="Password" 
+                                            onChange = {(event) => setPassword(event.target.value)}>
+                                        </input>
+                                    </FormField>
+                                </FormGroup>
+                                
+                                <button 
+                                    type="submit" 
+                                    onClick={handleClick}
+                                    className="ui blue button">
+                                    Submit
+                                </button>
+                            </Form>
+                        </Segment>
+                        
                     </div>
                 );
 }
