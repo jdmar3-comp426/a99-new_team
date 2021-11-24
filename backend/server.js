@@ -68,9 +68,20 @@ app.post("/app/verifyLogin", (req,res)=>{
 
 });
 
+// register a new user
+app.post("/app/register",(req,res)=>{
+	const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname, score) VALUES (?,?,?,?)").run(req.body.user, md5(req.body.pass),req.body.nickname,0);
+	const coun = db.prepare("SELECT COUNT(1) FROM userinfo WHERE user = ?").get(req.body.user)
+	if (coun == 1){
+		res.status(401).json({valid: false});
+	} else{
+		res.status(201).json({valid: true});
+	}
+})
 
 // Default response for any other request
 app.use(function(req, res){
 	res.json({"message":"Endpoint not found. (404)"});
     res.status(404);
 });
+
