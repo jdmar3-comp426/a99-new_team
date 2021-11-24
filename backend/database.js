@@ -15,7 +15,7 @@ if (row === undefined) {
 // Set a const that will contain your SQL commands to initialize the database.
     const sqlInit = `
         CREATE TABLE userinfo ( id INTEGER PRIMARY KEY, user TEXT, pass TEXT, nickname TEXT, score INTEGER );
-		INSERT INTO userinfo (user, pass, nickname, score) VALUES ('admin','bdc87b9c894da5168059e00ebffb9077', 'Admin',999), ('test','9241818c20435c6672dac2c4b6e6c071','001',0)
+		INSERT INTO userinfo (user, pass, nickname, score) VALUES ('admin','1a1dc91c907325c69271ddf0c944bc72', 'Admin',999), ('test','9241818c20435c6672dac2c4b6e6c071','001',0)
     `;
 // Execute SQL commands that we just wrote above.
     db.exec(sqlInit);

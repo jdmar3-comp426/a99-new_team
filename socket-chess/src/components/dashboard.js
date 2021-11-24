@@ -5,12 +5,17 @@ import { Button } from 'semantic-ui-react';
 
 
 
+
 function DashBoard(props){
     const [state, ]=useState({username:localStorage.getItem('userName')});
     let navigate=useNavigate();
 
     function handleClick(){
         auth.LogOut(()=>{navigate('/')});
+    }
+
+    function handleNewGame() {
+        navigate("/new-game")
     }
 
     return (
@@ -26,7 +31,7 @@ function DashBoard(props){
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {2}</h2>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <Button color="green">Click for New Game</Button>
+                <Button color="green" onClick={handleNewGame}>Click for New Game</Button>
             </div>
         </div>
 

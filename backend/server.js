@@ -57,7 +57,7 @@ app.delete("/app/delete/:id",(req,res)=>{
 
 app.post("/app/verifyLogin", (req,res)=>{
 	console.log(req);
-	const row = db.prepare("SELECT * FROM userinfo WHERE user= ? AND pass = ?").get(req.body.user, req.body.pass);
+	const row = db.prepare("SELECT * FROM userinfo WHERE user= ? AND pass = ?").get(req.body.user, md5(req.body.pass));
 	//check stmt if there is a match and send response accordingly
     console.log(row);
 	if (row) {
@@ -70,14 +70,16 @@ app.post("/app/verifyLogin", (req,res)=>{
 
 // register a new user
 app.post("/app/register",(req,res)=>{
-	const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname, score) VALUES (?,?,?,?)").run(req.body.user, md5(req.body.pass),req.body.nickname,0);
-	const coun = db.prepare("SELECT COUNT(1) FROM userinfo WHERE user = ?").get(req.body.user)
-	if (coun == 1){
+	console.log(req);
+	const coun = db.prepare("SELECT * FROM userinfo WHERE user = ?").get(req.body.user);
+	console.log(coun);
+	if (coun){
 		res.status(401).json({valid: false});
 	} else{
+		const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname, score) VALUES (?,?,?,?)").run(req.body.user, md5(req.body.pass),req.body.nickname,0);
 		res.status(201).json({valid: true});
 	}
-})
+});
 
 // Default response for any other request
 app.use(function(req, res){

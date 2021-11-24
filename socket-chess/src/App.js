@@ -7,6 +7,8 @@ import ProtectedRoute from './components/protectedroute';
 import DashBoard from './components/dashboard';
 import 'semantic-ui-css/semantic.min.css';
 import CustomNav from './components/navigation';
+import Game from "./components/game";
+
 function App() {
 
   return (
@@ -39,6 +41,7 @@ function App() {
 
             </Route>
 
+          <Route exact path = '/new-game/' element={<Game/>}></Route>
         </Routes>
       </Router>
   );
