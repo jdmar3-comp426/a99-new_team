@@ -15,7 +15,11 @@ function DashBoard(props){
     }
 
     function handleNewGame() {
-        navigate("/new-game")
+        navigate("/create-game");
+    }
+
+    function handleJoinGame() {
+        navigate("/join-game");
     }
 
     return (
@@ -43,6 +47,7 @@ function DashBoard(props){
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Button color="green" onClick={handleNewGame}>Click for New Game</Button>
+               < Button color="green" onClick={handleJoinGame}>Click to Join </Button>
             </div>
         </div>
 
