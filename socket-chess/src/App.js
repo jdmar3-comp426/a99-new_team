@@ -8,29 +8,41 @@ import DashBoard from './components/dashboard';
 import 'semantic-ui-css/semantic.min.css';
 import CustomNav from './components/navigation';
 import Game from "./components/game";
+import React from 'react';
 
 function App() {
 
+  const fragment = (isActive,setActive) =>{ return <React.Fragment>
+  <Link to="/" className={isActive === "landing" ? "active item" : "item"} onClick={() => setActive("landing")}>Home</Link>
+  <Link to="/login" className={isActive === "login" ? "active item" : "item"} onClick={() => setActive("login")}>Log In</Link>
+  <Link to="/register" className={isActive === "register" ? "active item" : "item"} onClick={() => setActive("register")}> Register</Link>
+  </React.Fragment>}
   return (
       <Router>
         
         <Routes>
-          <Route exact path="/" element={<div><CustomNav currPage='landing'/> <LandingPage></LandingPage></div>}>
+          <Route exact path="/" element={<div><CustomNav currPage='landing'>{fragment}</CustomNav> <LandingPage></LandingPage></div>}>
           </Route>
 
-          <Route exact path="/login" element={<div><CustomNav currPage='login'/><Login></Login></div>}>
+          <Route exact path="/login" element={<div><CustomNav currPage='login'>{fragment}</CustomNav><Login></Login></div>}>
           </Route>
 
-          <Route exact path="/register" element={<div><CustomNav currPage='register'/><Register></Register></div>}>
+          <Route exact path="/register" element={<div><CustomNav currPage='register'>{fragment}</CustomNav><Register></Register></div>}>
           </Route>
 
           <Route exact path = '/private-dashboard' element={
           
           <ProtectedRoute>
 
-              <CustomNav currPage='dashBoard'>
+              <CustomNav currPage='dashboard'>
                 {(isActive,setActive)=>{
-                   return <Link to="/private-dashboard" className={isActive === "dashboard" ? "active item" : "item"} onClick={() => setActive("dashboard")}> User DashBoard</Link>
+                   return( 
+                   <React.Fragment>
+                     <Link to="/private-dashboard"  className={isActive === "dashboard" ? "active item" : "item"} onClick={() => setActive("dashboard")}> User DashBoard</Link>
+                     <Link to ="/new-game" className={isActive === "newgame" ? "active item" : "item"} onClick={() => setActive("newgame")}> Play a Game </Link>
+                   </React.Fragment>
+                   );
+                   
                   }
                 }
               </CustomNav>
@@ -41,7 +53,25 @@ function App() {
 
             </Route>
 
-          <Route exact path = '/new-game/' element={<Game/>}></Route>
+          <Route exact path = '/new-game' element={
+            <div>
+              <CustomNav currPage='newgame'>
+                {(isActive,setActive)=>{
+                   return( 
+                   <React.Fragment>
+                     <Link to="/private-dashboard"  className={isActive === "dashboard" ? "active item" : "item"} onClick={() => setActive("dashboard")}> User DashBoard</Link>
+                     <Link to ="/new-game" className={isActive === "newgame" ? "active item" : "item"} onClick={() => setActive("newgame")}> Play a Game </Link>
+                   </React.Fragment>
+                   );
+                   
+                  }
+                }
+              </CustomNav>
+
+              <Game/>
+            </div>
+            }></Route>
+
         </Routes>
       </Router>
   );
