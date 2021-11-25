@@ -47,7 +47,7 @@ function DashBoard(props){
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Button color="green" onClick={handleNewGame}>Click for New Game</Button>
-               < Button color="green" onClick={handleJoinGame}>Click to Join </Button>
+               < Button color="green" onClick={handleJoinGame}>Click to Join a game </Button>
             </div>
         </div>
 
