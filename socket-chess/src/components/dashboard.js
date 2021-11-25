@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import auth from "../authentication/authenticator";
-import { Button } from 'semantic-ui-react';
+import { Button, Segment, Icon } from 'semantic-ui-react';
 
 
 
@@ -20,8 +20,19 @@ function DashBoard(props){
 
     return (
         <div>
-            <h1>Welcome to Your DashBoard {state.username}</h1>
-            <button onClick={handleClick}>Log Out</button>
+            <Segment inverted color="blue" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignContent: 'spaceBetween'}}>
+                <h1>{state.username}'s Dashboard</h1>
+                <Icon name="chess" size="big"></Icon>
+            </Segment>
+            
+            <Segment vertical clearing style={{ textAlign: 'center', display: 'flex', justifyContent: 'center'}}>
+                <h2 style={{ marginLeft: 'auto', paddingLeft: '10rem'}}>Welcome to Your DashBoard {state.username}</h2>
+                <div style={{ marginLeft: 'auto', paddingRight: '1rem'}}>
+                    <Button color="red" onClick={handleClick} style={{  }}>Log Out</Button>
+                </div>
+                
+            </Segment>
+           
 
             <div style={{ textAlign: 'center' }}>
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins: {5}</h2>
