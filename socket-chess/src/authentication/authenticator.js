@@ -40,8 +40,14 @@ class Authenticator{
       localStorage.removeItem('userName');
       callBack();
     }
+
     isAuthenticated(){
         return this.authenticated;
+    }
+
+    setAuthenticated(bool){
+      this.authenticated=true;
+      return true;
     }
 }
 

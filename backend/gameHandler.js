@@ -38,8 +38,6 @@
  
      gameSocket.on('recieved userName', recievedUserName)
  
-     // register event listeners for video chat app:
-     videoChatBackend()
  }
  
 
@@ -86,10 +84,15 @@
  
  function createNewGame(gameId) {
      // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-     this.emit('createNewGame', {gameId: gameId, mySocketId: this.id});
- 
+     if(io.sockets.adapter.rooms[gameID])
+        this.send("Can't create game");
+    else{
+        this.emit('createNewGame', {gameId: gameId, mySocketId: this.id});
+
      // Join the Room and wait for the other player
      this.join(gameId)
+    }
+     
  }
  
  
@@ -120,4 +123,4 @@
      io.to(data.gameId).emit('get Opponent UserName', data);
  }
  
- export default initializeGame
+ exports.initializeGame= initializeGame

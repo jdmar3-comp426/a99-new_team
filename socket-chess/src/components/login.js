@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { Form, FormGroup, FormField, Segment } from 'semantic-ui-react';
 import auth from '../authentication/authenticator'
 
@@ -22,6 +22,11 @@ function Login(props){
             });
         else
             alert("Please enter Username and Password");
+    }
+
+    if(localStorage.getItem('userName')){
+        auth.setAuthenticated(true);
+        return <Navigate to='/private-dashboard'></Navigate>;
     }
 
     return (

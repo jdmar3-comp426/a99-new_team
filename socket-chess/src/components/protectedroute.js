@@ -9,6 +9,13 @@ class ProtectedRoute extends Component{
         this.state={'authenticated':auth.isAuthenticated()};
     }
 
+    componentDidMount(){
+        if(localStorage.getItem('userName')){
+            this.setState({'authenticated':true});
+            auth.setAuthenticated(true);
+        }
+    }
+
     render(){
         console.log(this.props);
         return this.state.authenticated? this.props.children: <div><CustomNav currPage='login'></CustomNav><div><h1>LogIn Failed!</h1></div></div>//<Navigate to ='/'></Navigate>
