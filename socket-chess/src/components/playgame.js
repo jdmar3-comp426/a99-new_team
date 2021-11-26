@@ -1,19 +1,21 @@
 
-import React, { useState } from 'react';
-import ChessBoard from "./ChessBoard";
+import React from 'react';
+import { useParams } from 'react-router';
+import WithMoveValidation from './ChessBoard';
 
-function Game(props) {
+function PlayGame(props) {
+    const params=useParams();
       return (
         <div>
           <div style={boardsContainer}>
-            <ChessBoard/>
+            <WithMoveValidation orientation={params.color}/>
           </div>
         </div>
       );
     }
 
   
-  export default Game;
+  export default PlayGame;
   
   const boardsContainer = {
     display: "flex",

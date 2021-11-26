@@ -138,6 +138,7 @@ class HumanVsHuman extends Component {
 
     return this.props.children({
       squareStyles,
+      orientation:this.props.orientation,
       position: fen,
       onMouseOverSquare: this.onMouseOverSquare,
       onMouseOutSquare: this.onMouseOutSquare,
@@ -150,11 +151,12 @@ class HumanVsHuman extends Component {
   }
 }
 
-export default function WithMoveValidation() {
+export default function WithMoveValidation(props) {
   return (
     <div>
-      <HumanVsHuman>
+      <HumanVsHuman orientation={props.orientation}>
         {({
+          orientation,
           position,
           onDrop,
           onMouseOverSquare,
@@ -168,6 +170,7 @@ export default function WithMoveValidation() {
           <Chessboard
             id="humanVsHuman"
             width={500}
+            orientation={orientation}
             position={position}
             onDrop={onDrop}
             onMouseOverSquare={onMouseOverSquare}
