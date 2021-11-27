@@ -16,6 +16,7 @@
       */
  
      // initialize global variables.
+     console.log("initialized game!");
      io = sio 
      gameSocket = socket 
  
@@ -40,7 +41,9 @@
  
  }
  
-
+const hello = () => {
+    console.log("hello");
+}
  
  function playerJoinsGame(idData) {
      /**
@@ -84,13 +87,17 @@
  
  function createNewGame(gameId) {
      // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-     if(io.sockets.adapter.rooms[gameID])
+     console.log("new game created");
+     if(io.sockets.adapter.rooms[gameId])
         this.send("Can't create game");
     else{
         this.emit('createNewGame', {gameId: gameId, mySocketId: this.id});
 
      // Join the Room and wait for the other player
      this.join(gameId)
+     console.log(gameId);
+     var room = io.sockets.adapter.rooms[idData.gameId]
+     console.log("room length" + io.sockets.adapter.rooms);
     }
      
  }
@@ -123,4 +130,4 @@
      io.to(data.gameId).emit('get Opponent UserName', data);
  }
  
- exports.initializeGame= initializeGame
+module.exports = {initializeGame, hello};

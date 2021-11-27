@@ -6,8 +6,10 @@ var cors= require("cors");
 var db= require("./database.js");
 // Require md5 MODULE
 var md5=require("md5")
-var socket= require("socket.io")
-var GameHandler = require('./gameHandler.js')
+var socket= require("socket.io");
+
+var GameHandler = require('./gameHandler.js');
+
 // Make Express use its own built-in body parser
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -20,7 +22,12 @@ var server= app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 
-const serverSocket = socket(server);
+const serverSocket = socket(server, {
+	cors: {
+	  origin: "http://localhost:3000",
+	  methods: ["GET", "POST"]
+	}
+  });
 
 // READ (HTTP method GET) at root endpoint /app/
 app.get("/app/", (req, res, next) => {
@@ -95,5 +102,4 @@ app.use(function(req, res){
 
 // socket listens to client connection
 
-serverSocket.on('clientConnect',(client)=>{GameHandler.initializeNewGame(serverSocket,client)});
-
+serverSocket.on('connection', (client)=>{GameHandler.initializeGame(serverSocket,client)});

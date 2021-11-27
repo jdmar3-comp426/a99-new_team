@@ -5,13 +5,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { Select } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
 import md5 from 'md5';
+const socket = require("../connect/clientSocket.js").sock;
 
 function CreateNewGame(props) {
   const [color,setColor]=useState('white');
   const [gameId,setGameId]=useState('');
   const navigate=useNavigate();
 
-  console.log(color);
+  function handleClick(event) {
+    event.preventDefault();
+    if (gameId==='')
+    {
+      alert("Please generate a Game ID first");
+      return;
+    }
+    socket.emit("createNewGame", gameId);
+
+    socket.emit("playerJoinGame", {gameId: gameId, userName: localStorage.getItem("userName")});
+
+    navigate("/loading-page", {state: {gameId: gameId, color: color}});
+  }
 
   return(
     <div>
@@ -24,11 +37,13 @@ function CreateNewGame(props) {
         <Select onChange={(event,data)=>setColor(data.value)} value={color} options={[{key:'w',value:'white',text:'White'},{key:'b',value:'black',text:'Black'}]} />
 
         <label>Start Game</label>
-        <button onClick={(event)=>{event.preventDefault();if(gameId===''){alert("Please generate a Game ID first");return};navigate("/new-game/"+gameId+"/"+color)}}>Start</button>
+        <button onClick={handleClick}>Start</button>
       </form>
     </div>
   );
 };
+
+
   
   export default CreateNewGame;
   

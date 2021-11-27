@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+const socket = require("../connect/clientSocket.js").sock;
 
 function JoinGame(){
     const [gameId,setGameId]=useState('');
@@ -10,6 +11,9 @@ function JoinGame(){
       if(gameId===''){alert("Please enter a Game ID first");
         return
       }
+
+      socket.emit("playerJoinGame", {gameId: gameId, userName: localStorage.getItem("userName")})
+
       navigate("/join-game/"+gameId);
     }
 
