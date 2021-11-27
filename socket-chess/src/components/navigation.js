@@ -1,9 +1,15 @@
 import 'semantic-ui-css/semantic.min.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from 'react-router';
 function CustomNav(props){
-    const [isActive, setActive] = useState(props.currPage);
-    console.log(props.children);
-    return(
+  const currPage=useLocation();
+  console.log(currPage.pathname);
+  const [isActive, setActive] = useState(props.currPage);
+
+  useEffect(()=>{
+    setActive(currPage.pathname);
+  },[currPage.pathname])
+  return(
         <div>
           <nav>
           <div className="ui pointing secondary menu">

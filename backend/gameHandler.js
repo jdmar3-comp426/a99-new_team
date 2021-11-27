@@ -4,10 +4,10 @@
  * Here is where we should register event listeners and emitters. 
  */
 
- var io
- var gameSocket
+ var io;
+ var gameSocket;
  // gamesInSession stores an array of all active socket connections
- var gamesInSession = []
+ var gamesInSession = [];
  
  
  const initializeGame = (sio, socket) => {
@@ -21,24 +21,23 @@
      gameSocket = socket 
  
      // pushes this socket to an array which stores all the active sockets.
-     gamesInSession.push(gameSocket)
+     gamesInSession.push(gameSocket);
  
      // Run code when the client disconnects from their socket session. 
-     gameSocket.on("disconnect", onDisconnect)
+     gameSocket.on("disconnect", onDisconnect);
  
      // Sends new move to the other socket session in the same room. 
-     gameSocket.on("new move", newMove)
+     gameSocket.on("new move", newMove);
  
      // User creates new game room after clicking 'submit' on the frontend
-     gameSocket.on("createNewGame", createNewGame)
+     gameSocket.on("createNewGame", createNewGame);
  
      // User joins gameRoom after going to a URL with '/game/:gameId' 
-     gameSocket.on("playerJoinGame", playerJoinsGame)
+     gameSocket.on("playerJoinGame", playerJoinsGame);
  
-     gameSocket.on('request username', requestUserName)
+     gameSocket.on('request opponent username and color for joinee', requestOppInfo);
  
-     gameSocket.on('recieved userName', recievedUserName)
- 
+     gameSocket.on('recieved userName and color from creator', recievedOppInfo); 
  }
  
 const hello = () => {
@@ -54,7 +53,7 @@ const hello = () => {
      var sock = this
      
      // Look up the room ID in the Socket.IO manager object.
-     var room = io.sockets.adapter.rooms[idData.gameId]
+     var room = io.sockets.adapter.rooms.get(idData.gameId);
     // console.log(room)
  
      // If the room exists...
@@ -62,16 +61,16 @@ const hello = () => {
          this.emit('status' , "This game session does not exist." );
          return
      }
-     if (room.length < 2) {
+     if (room.size < 2) {
          // attach the socket id to the data object.
          idData.mySocketId = sock.id;
  
          // Join the room
          sock.join(idData.gameId);
  
-         console.log(room.length)
+         console.log(room.size)
  
-         if (room.length === 2) {
+         if (room.size === 2) {
              io.sockets.in(idData.gameId).emit('start game', idData.userName)
          }
  
@@ -94,10 +93,7 @@ const hello = () => {
         this.emit('createNewGame', {gameId: gameId, mySocketId: this.id});
 
      // Join the Room and wait for the other player
-     this.join(gameId)
-     console.log(gameId);
-     var room = io.sockets.adapter.rooms[idData.gameId]
-     console.log("room length" + io.sockets.adapter.rooms);
+     this.join(gameId);
     }
      
  }
@@ -121,13 +117,14 @@ const hello = () => {
  }
  
  
- function requestUserName(gameId) {
-     io.to(gameId).emit('give userName', this.id);
+ function requestOppInfo(gameId) {
+     io.to(gameId).emit('give userName and Color', this.id);
  }
  
- function recievedUserName(data) {
+ function recievedOppInfo(data) {
      data.socketId = this.id
-     io.to(data.gameId).emit('get Opponent UserName', data);
+     io.to(data.gameId).emit('get Opponent UserName and color', data);
  }
+
  
 module.exports = {initializeGame, hello};
