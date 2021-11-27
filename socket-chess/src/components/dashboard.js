@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import auth from "../authentication/authenticator";
+import axios from 'axios';
 import { Button, Segment, Icon } from 'semantic-ui-react';
 
 
@@ -8,6 +9,8 @@ import { Button, Segment, Icon } from 'semantic-ui-react';
 
 function DashBoard(props){
     const [state, ]=useState({username:localStorage.getItem('userName')});
+    const [data,setData]= useState({'eloRating':600,'winsAsWhite':0,'winsAsBlack':0, 'lossesAsWhite':0,
+                                    'lossesAsBlack':0, 'drawsAsWhite':0, 'drawsAsBlack':0});
     let navigate=useNavigate();
 
     function handleClick(){
@@ -17,10 +20,25 @@ function DashBoard(props){
     function handleNewGame() {
         navigate("/create-game");
     }
-
+    
     function handleJoinGame() {
         navigate("/join-game");
     }
+
+    useEffect( ()=>{
+        async function fetchData() {
+            try{
+                const res= await axios.get('http://localhost:5000/app/getUserData/'+state.username);
+                setData(res.data);
+                console.log(res.data);
+            }catch(error){
+                console.log('Failed to Load User Data');
+                console.log(error);
+            }
+        }
+
+        fetchData();        
+    },[]);
 
     return (
         <div>
