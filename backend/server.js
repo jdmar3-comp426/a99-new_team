@@ -35,24 +35,11 @@ app.get("/app/", (req, res, next) => {
 	res.status(200);
 });
 
-// Define other CRUD API endpoints using express.js and better-sqlite3
-// CREATE a new user (HTTP method POST) at endpoint /app/new/
-app.post("/app/new/",(req,res)=>{
-	const stmt = db.prepare("INSERT INTO userinfo (user,pass) VALUES (?,?)").run(req.body.user, md5(req.body.pass));
-	res.status(201).json({"message":"1 record created: ID %ID% (201)".replace("%ID%",stmt.lastInsertRowid)});
-})
-
 // READ a list of all users (HTTP method GET) at endpoint /app/users/
 app.get("/app/users", (req, res) => {	
 	const stmt = db.prepare("SELECT * FROM userinfo").all();
 	res.status(200).json(stmt);
 });
-
-// READ a single user (HTTP method GET) at endpoint /app/user/:id
-app.get("/app/user/:id",(req,res)=>{
-	const stmt = db.prepare("SELECT * FROM userinfo WHERE id=?").get(req.params.id);
-	res.status(200).json(stmt);
-})
 
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
 app.patch("/app/update/user/:id",(req,res)=>{
@@ -61,17 +48,17 @@ app.patch("/app/update/user/:id",(req,res)=>{
 
 })
 
-// DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
-app.delete("/app/delete/:id",(req,res)=>{
-	const stmt = db.prepare("DELETE FROM userinfo WHERE id = ?").run(req.params.id);
-	res.status(201).json({"message":"1 record deleted: ID %ID% (200)".replace("%ID%",req.params.id)});
-})
+// // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
+// app.delete("/app/delete/:id",(req,res)=>{
+// 	const stmt = db.prepare("DELETE FROM userinfo WHERE id = ?").run(req.params.id);
+// 	res.status(201).json({"message":"1 record deleted: ID %ID% (200)".replace("%ID%",req.params.id)});
+// })
 
 app.post("/app/verifyLogin", (req,res)=>{
-	console.log(req);
+	//console.log(req);
 	const row = db.prepare("SELECT * FROM userinfo WHERE user= ? AND pass = ?").get(req.body.user, md5(req.body.pass));
 	//check stmt if there is a match and send response accordingly
-    console.log(row);
+    //console.log(row);
 	if (row) {
 		res.status(201).json({valid: true});
 	} else {
@@ -82,15 +69,27 @@ app.post("/app/verifyLogin", (req,res)=>{
 
 // register a new user
 app.post("/app/register",(req,res)=>{
-	console.log(req);
+	//console.log(req);
 	const coun = db.prepare("SELECT * FROM userinfo WHERE user = ?").get(req.body.user);
-	console.log(coun);
+	//console.log(coun);
 	if (coun){
 		res.status(401).json({valid: false});
 	} else{
-		const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname, score) VALUES (?,?,?,?)").run(req.body.user, md5(req.body.pass),req.body.nickname,0);
+		const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname,elo, winsAsWhite, winsAsBlack, lossesAsWhite,lossesAsBlack, drawsAsWhite, drawsAsBlack) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		const res= stmt.run(req.body.user, md5(req.body.pass),req.body.nickname,600,0,0,0,0);
 		res.status(201).json({valid: true});
 	}
+});
+
+// send user dashboard data
+app.get('/app/getUserData/:userName',(req,res)=>{
+	const data = db.prepare("SELECT * FROM userinfo WHERE user = ?").get(req.params.userName);
+	console.log('userData: '+ data);
+	console.log(req.params);
+	if(data)
+		res.status(201).json({'eloRating':data.elo,'winsAsWhite':data.winsAsWhite,'winsAsBlack':data.winsAsBlack, 'lossesAsWhite':data.lossesAsWhite,'lossesAsBlack':data.lossesAsBlack, 'drawsAsWhite':data.drawsAsWhite, 'drawsAsBlack':data.drawsAsBlack});
+	else
+		res.status(401).json({msg:"Invalid User"})
 });
 
 // Default response for any other request
