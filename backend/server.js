@@ -84,8 +84,6 @@ app.post("/app/register",(req,res)=>{
 // send user dashboard data
 app.get('/app/getUserData/:userName',(req,res)=>{
 	const data = db.prepare("SELECT * FROM userinfo WHERE user = ?").get(req.params.userName);
-	console.log('userData: '+ data);
-	console.log(req.params);
 	if(data)
 		res.status(201).json({'eloRating':data.elo,'winsAsWhite':data.winsAsWhite,'winsAsBlack':data.winsAsBlack, 'lossesAsWhite':data.lossesAsWhite,'lossesAsBlack':data.lossesAsBlack, 'drawsAsWhite':data.drawsAsWhite, 'drawsAsBlack':data.drawsAsBlack});
 	else
@@ -94,8 +92,26 @@ app.get('/app/getUserData/:userName',(req,res)=>{
 
 
 // Update user entry
-app.patch("/app/getUserData/userName",(req,res)=>{
-	//TODO update score and game counts.
+app.patch("/app/updateUserData/:userName",(req,res)=>{
+	const oldData = db.prepare("SELECT * FROM userinfo WHERE user = ?").get(req.params.userName);
+	if(oldData){
+		const stmt = db.prepare("UPDATE userinfo SET elo = COALESCE(?,elo), winsAsWhite=COALESCE(?,winsAsWhite), winsAsBlack=COALESCE(?, winsAsBlack), lossesAsWhite=COALESCE(?,lossesAsWhite), lossesAsBlack=COALESCE(?,lossesAsBlack), drawsAsWhite=COALESCE(?,drawsAsWhite), drawsAsBlack=COALESCE(?,drawsAsBlack)  WHERE user = ?").run(
+			req.body.eloRating+oldData.elo,
+			oldData.winsAsWhite+req.body.winsAsWhite, 
+			oldData.winsAsBlack+req.body.winsAsBlack,
+			oldData.lossesAsWhite+req.body.lossesAsWhite, 
+			oldData.lossesAsBlack+req.body.lossesAsBlack, 
+			oldData.drawsAsWhite+req.body.drawsAsWhite, 
+			oldData.drawsAsBlack+req.body.drawsAsBlack, 
+			req.params.userName);
+		res.status(201).json({msg:"UserData Updated"});
+		console.log('user data updated');
+	}
+	else{
+		console.log('user data not updated');
+		console.log('userName:'+req.params.userName);
+		res.status(401).json({msg:"Invalid User"});
+	}
 });
 
 // Default response for any other request

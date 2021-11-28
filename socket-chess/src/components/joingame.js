@@ -17,12 +17,13 @@ function JoinGame(){
 
         socket.on("get Opponent UserName and color",(data)=>{
           setColor(data.color==='white'?'black':'white');
+          console.log(data.userName);
           setOppName(data.userName);
         });
 
         socket.on('status',(msg)=>(alert(msg)));
     }
-    );
+    ,[]);
 
     function handleJoinGame(event){
       event.preventDefault();
@@ -34,7 +35,7 @@ function JoinGame(){
       socket.emit("playerJoinGame", {gameId: gameId, userName: localStorage.getItem("userName")});
       socket.emit('request opponent username and color for joinee',gameId);
     }
-    if(!start || (color==='' && oppName==='')){
+    if(!start || oppName===''){
         return(
             <div>
               <Segment  basic style={{ display: 'flex', justifyContent: 'center'}}>
@@ -60,7 +61,7 @@ function JoinGame(){
           );
     }
     else{
-
+      console.log('rec oppName:'+oppName);
       return <Navigate to={"/join-game/"+gameId} state={{color:color,gameId:gameId ,userName: {oppName: oppName, myName:localStorage.getItem('userName')}}}></Navigate>
     }
 }

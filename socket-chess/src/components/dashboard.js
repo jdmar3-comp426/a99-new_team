@@ -58,10 +58,10 @@ function DashBoard(props){
             <div style={{ textAlign: 'center' }}>
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins: {data.winsAsBlack + data.winsAsWhite}</h2>
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Losses: {data.lossesAsBlack + data.lossesAsWhite}</h2>
-                    {data.winsAsBlack + data.winsAsBlack == 0 || data.lossesAsBlack + data.lossesAsWhite == 0 ? (
-                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: 0 Played</h2>
+                    {(data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite + data.drawsAsBlack + data.drawsAsWhite) === 0 ? (
+                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: - </h2>
                     ) : (
-                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: {((data.winsAsBlack + data.winsAsWhite) / (data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite))}%</h2>
+                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: {((data.winsAsBlack + data.winsAsWhite) / (data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite+data.drawsAsBlack + data.drawsAsWhite)*100)}%</h2>
                     )}
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as Black: {data.winsAsBlack}</h2>
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {data.winsAsWhite}</h2>

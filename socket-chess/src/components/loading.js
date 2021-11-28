@@ -33,7 +33,7 @@ function Loading(props) {
         })
 
     }
-    );
+    ,[]);
     if(!(start && sentOppInfo)){
         return(<div>
             <h1>LOADING .....</h1>

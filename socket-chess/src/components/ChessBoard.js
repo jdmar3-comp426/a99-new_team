@@ -3,7 +3,7 @@ import wavurl from '../assets/audio_move.wav'
 import PropTypes from "prop-types";
 import Chess from "chess.js"; // import Chess from  "chess.js"(default) if recieving an error about new Chess() not being a constructor
 import Chessboard from "chessboardjsx";
-import { Button, Header, Modal } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import axios from "axios";
 const socket = require("../connect/clientSocket.js").sock;
 
@@ -32,13 +32,50 @@ class HumanVsHuman extends Component {
     };
   }
 
-  // componentDidUpdate(prevprops, prevState){
-  //   if(prevState.dataBaseUpdated===false && this.state.updateDatabase===true){
-  //     axios.patch('http://localhost:5000/app/updateUserData/'+this.props.playerName.myName,{});
-  //   }
-  // }
+  componentDidUpdate(prevprops, prevState){
+    if(prevState.updateDatabase===false && this.state.updateDatabase===true){
+      console.log('updating database')
+      var update={'eloRating':7,'winsAsWhite':0,'winsAsBlack':0, 'lossesAsWhite':0,
+                    'lossesAsBlack':0, 'drawsAsWhite':0, 'drawsAsBlack':0};
+      if(this.state.result==='YOU LOSE!'){
+        update.eloRating=-7;
+        if(this.props.orientation==='white')
+          update.lossesAsWhite='1';
+        else
+          update.lossesAsBlack='1';
+      }
+      else if(this.state.result==='YOU WIN!'){
+        update.eloRating=7;
+        if(this.props.orientation==='white')
+          update.winsAsWhite='1';
+        else
+          update.winsAsBlack='1';
+      }
+      else{
+        update.eloRating=2;
+        if(this.props.orientation==='white')
+          update.drawsAsWhite='1';
+        else
+          update.drawsAsBlack='1';
+      }
+      
+        const handleUpdate= async () =>{
+          try {
+            const res=await axios.patch('http://localhost:5000/app/updateUserData/'+this.props.playerNames.myName,update);
+            console.log(res.data);
+
+          } catch (error) {
+            console.log(error);
+            console.log('could not update user records');
+          }
+        };
+        handleUpdate();
+      
+    }
+  }
 
   componentDidMount() {
+    console.log(this.props.playerNames);
     this.game = new Chess();
     this.audio= new Audio(wavurl);
     //this.audio.play();
@@ -51,15 +88,15 @@ class HumanVsHuman extends Component {
       },()=>{this.audio.play();});
 
       if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
-        this.setState({result:'DRAW!',gameOver:true});
+        this.setState({result:'DRAW!',gameOver:true,updateDatabase:true});
       }
   
       else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
-        this.setState({result:'YOU WIN!',gameOver:true});
+        this.setState({result:'YOU WIN!',gameOver:true,updateDatabase:true});
       }
   
       else if(this.game.game_over() && this.game.in_checkmate()){
-        this.setState({result:'YOU LOSE!',gameOver:true});
+        this.setState({result:'YOU LOSE!',gameOver:true,updateDatabase:true});
       }
     });
   }
@@ -119,15 +156,15 @@ class HumanVsHuman extends Component {
 
     socket.emit("new move", {move:move, gameId:this.state.gameId}); 
     if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
-      this.setState({result:'DRAW!',gameOver:true});
+      this.setState({result:'DRAW!',gameOver:true,updateDatabase:true});
     }
 
     else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
-      this.setState({result:'YOU WIN!',gameOver:true});
+      this.setState({result:'YOU WIN!',gameOver:true,updateDatabase:true});
     }
 
     else if(this.game.game_over() && this.game.in_checkmate()){
-      this.setState({result:'YOU LOSE!',gameOver:true});
+      this.setState({result:'YOU LOSE!',gameOver:true,updateDatabase:true});
     }
   };
 
@@ -189,15 +226,15 @@ class HumanVsHuman extends Component {
     },()=>{this.audio.play()});
     socket.emit("new move", {move:move, gameId:this.state.gameId});
     if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
-      this.setState({result:'DRAW!',gameOver:true});
+      this.setState({result:'DRAW!',gameOver:true,updateDatabase:true});
     }
 
     else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
-      this.setState({result:'YOU WIN!',gameOver:true});
+      this.setState({result:'YOU WIN!',gameOver:true,updateDatabase:true});
     }
 
     else if(this.game.game_over() && this.game.in_checkmate()){
-      this.setState({result:'YOU LOSE!',gameOver:true});
+      this.setState({result:'YOU LOSE!',gameOver:true,updateDatabase:true});
     }   
   };
 
@@ -238,6 +275,7 @@ class HumanVsHuman extends Component {
 }
 
 export default function WithMoveValidation(props) {
+  console.log(props.playerNames);
   return (
     <div>
       <HumanVsHuman orientation={props.orientation} gameId ={props.gameId} playerNames={props.playerNames}>
