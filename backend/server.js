@@ -76,7 +76,7 @@ app.post("/app/register",(req,res)=>{
 		res.status(401).json({valid: false});
 	} else{
 		const stmt = db.prepare("INSERT INTO userinfo (user,pass,nickname,elo, winsAsWhite, winsAsBlack, lossesAsWhite,lossesAsBlack, drawsAsWhite, drawsAsBlack) VALUES (?,?,?,?,?,?,?,?,?,?)");
-		const res= stmt.run(req.body.user, md5(req.body.pass),req.body.nickname,600,0,0,0,0);
+		const result= stmt.run(req.body.user, md5(req.body.pass),req.body.nickname,600,0,0,0,0,0,0);
 		res.status(201).json({valid: true});
 	}
 });
