@@ -1,30 +1,67 @@
 import React, { Component } from "react";
+import wavurl from '../assets/audio_move.wav'
 import PropTypes from "prop-types";
 import Chess from "chess.js"; // import Chess from  "chess.js"(default) if recieving an error about new Chess() not being a constructor
+import Chessboard from "chessboardjsx";
+import { Header, Modal } from "semantic-ui-react";
+import axios from "axios";
 const socket = require("../connect/clientSocket.js").sock;
 
-import Chessboard from "chessboardjsx";
+
 
 class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
+  constructor(props){
+    super(props);
+    this.state = {
+      gameId: props.gameId,
+      fen: "start",
+      // square styles for active drop square
+      dropSquareStyle: {},
+      // custom square styles
+      squareStyles: {},
+      // square with the currently clicked piece
+      pieceSquare: "",
+      // currently clicked square
+      square: "",
+      // array of past game moves
+      history: [],
+      updateDatabase: false,
+      gameOver: false,
+      result: 'ongoing'
+    };
+  }
 
-  state = {
-    gameId: this.props.gameId,
-    fen: "start",
-    // square styles for active drop square
-    dropSquareStyle: {},
-    // custom square styles
-    squareStyles: {},
-    // square with the currently clicked piece
-    pieceSquare: "",
-    // currently clicked square
-    square: "",
-    // array of past game moves
-    history: []
-  };
+  // componentDidUpdate(prevprops, prevState){
+  //   if(prevState.dataBaseUpdated===false && this.state.updateDatabase===true){
+  //     axios.patch('http://localhost:5000/app/updateUserData/'+this.props.playerName.myName,{});
+  //   }
+  // }
 
   componentDidMount() {
     this.game = new Chess();
+    this.audio= new Audio(wavurl);
+    //this.audio.play();
+    socket.on("opponent move", (oppMove)=>{
+      this.game.move({from: oppMove.move.from, to:oppMove.move.to, promotion:oppMove.move.promotion});
+      this.setState({
+        fen: this.game.fen(),
+        history: this.game.history({ verbose: true }),
+        pieceSquare: ""
+      },()=>{this.audio.play();});
+
+      if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
+        this.setState({result:'DRAW!',gameOver:true});
+      }
+  
+      else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
+        this.setState({result:'YOU WIN!',gameOver:true});
+      }
+  
+      else if(this.game.game_over() && this.game.in_checkmate()){
+        this.setState({result:'YOU LOSE!',gameOver:true});
+      }
+    });
   }
 
   // keep clicked square style and remove hint squares
@@ -63,8 +100,10 @@ class HumanVsHuman extends Component {
 
   onDrop = ({ sourceSquare, targetSquare }) => {
     // see if the move is legal
+    if (this.game.turn() !== this.props.orientation[0].toLowerCase()) {
+      return;
+    }
     let move = this.game.move({
-      gameId: this.state.gameId,
       from: sourceSquare,
       to: targetSquare,
       promotion: "q" // always promote to a queen for example simplicity
@@ -76,11 +115,27 @@ class HumanVsHuman extends Component {
       fen: this.game.fen(),
       history: this.game.history({ verbose: true }),
       squareStyles: squareStyling({ pieceSquare, history })
-    }));
+    }),()=>{this.audio.play();});
+
+    socket.emit("new move", {move:move, gameId:this.state.gameId}); 
+    if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
+      this.setState({result:'DRAW!',gameOver:true});
+    }
+
+    else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
+      this.setState({result:'YOU WIN!',gameOver:true});
+    }
+
+    else if(this.game.game_over() && this.game.in_checkmate()){
+      this.setState({result:'YOU LOSE!',gameOver:true});
+    }
   };
 
   onMouseOverSquare = (square) => {
     // get list of possible moves for this square
+    if (this.game.turn() !== this.props.orientation[0].toLowerCase()) {
+      return;
+    }
     let moves = this.game.moves({
       square: square,
       verbose: true
@@ -118,7 +173,7 @@ class HumanVsHuman extends Component {
       pieceSquare: square
     }));
 
-    let move = this.game.move({
+    var move = this.game.move({
       from: this.state.pieceSquare,
       to: square,
       promotion: "q" // always promote to a queen for example simplicity
@@ -131,9 +186,19 @@ class HumanVsHuman extends Component {
       fen: this.game.fen(),
       history: this.game.history({ verbose: true }),
       pieceSquare: ""
-    });
-    socket.emit("new move", move);
-    
+    },()=>{this.audio.play()});
+    socket.emit("new move", {move:move, gameId:this.state.gameId});
+    if(this.game.game_over() && (this.game.in_draw() || this.game.in_stalemate()|| this.game.in_threefold_repetition() ||this.game.insufficient_material())){
+      this.setState({result:'DRAW!',gameOver:true});
+    }
+
+    else if(this.game.game_over() && this.game.in_checkmate() && this.props.orientation[0].toLowerCase()===(this.game.history({verbose:true})[this.game.history.length-1]).color){
+      this.setState({result:'YOU WIN!',gameOver:true});
+    }
+
+    else if(this.game.game_over() && this.game.in_checkmate()){
+      this.setState({result:'YOU LOSE!',gameOver:true});
+    }   
   };
 
   onSquareRightClick = (square) =>
@@ -142,9 +207,19 @@ class HumanVsHuman extends Component {
     });
 
   render() {
+    //console.log(this.state);
     const { fen, dropSquareStyle, squareStyles } = this.state;
-
-    return this.props.children({
+    return (<React.Fragment>
+      <Modal open={this.state.gameOver}> 
+          <Modal.Description>
+            <Header>
+              <p>
+                {this.state.result}
+              </p>
+            </Header>
+          </Modal.Description>
+      </Modal>
+      {this.props.children({
       squareStyles,
       orientation:this.props.orientation,
       position: fen,
@@ -155,14 +230,15 @@ class HumanVsHuman extends Component {
       onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick
-    });
+    })} 
+    </React.Fragment>);
   }
 }
 
 export default function WithMoveValidation(props) {
   return (
     <div>
-      <HumanVsHuman orientation={props.orientation} gameId ={props.gameId}>
+      <HumanVsHuman orientation={props.orientation} gameId ={props.gameId} playerNames={props.playerNames}>
         {({
           orientation,
           position,

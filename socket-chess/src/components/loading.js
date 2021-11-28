@@ -38,6 +38,7 @@ function Loading(props) {
         return(<div>
             <h1>LOADING .....</h1>
             <h2> Waiting for other player to join</h2>
+            <h3> Game Id : {gameId}</h3>
         </div>);
     }
     else{

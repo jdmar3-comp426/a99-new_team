@@ -92,6 +92,12 @@ app.get('/app/getUserData/:userName',(req,res)=>{
 		res.status(401).json({msg:"Invalid User"})
 });
 
+
+// Update user entry
+app.patch("/app/getUserData/userName",(req,res)=>{
+	//TODO update score and game counts.
+});
+
 // Default response for any other request
 app.use(function(req, res){
 	res.json({"message":"Endpoint not found. (404)"});

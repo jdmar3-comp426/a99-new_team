@@ -105,7 +105,7 @@ const hello = () => {
       * Next, we actually send this message to everyone except the sender
       * in this room. 
       */
-     
+     console.log(move);
      const gameId = move.gameId 
      
      io.to(gameId).emit('opponent move', move);

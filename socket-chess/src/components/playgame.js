@@ -1,15 +1,16 @@
 
 import React from 'react';
-import { useLocation } from 'react-router';
+import { useLocation,useParams } from 'react-router';
 import WithMoveValidation from './ChessBoard';
 
 function PlayGame(props) {
     const location = useLocation();
     const params=useParams(); // can use it to get gameID
+    console.log(params.gameid);
       return (
         <div>
           <div style={boardsContainer}>
-            <WithMoveValidation gameId = {params.gameId} playerNames={{myname:location.state.userName.myName, oppName: location.state.userName.oppName}} orientation={location.state.color}/>
+            <WithMoveValidation gameId = {params.gameid} playerNames={{myname:location.state.userName.myName, oppName: location.state.userName.oppName}} orientation={location.state.color}/>
           </div>
         </div>
       );

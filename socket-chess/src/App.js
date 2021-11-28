@@ -103,7 +103,7 @@ function App() {
             }>
           </Route>  
           
-          <Route exact path='/join-game/:gameId' element={<ProtectedRoute><PlayGame></PlayGame></ProtectedRoute>}></Route>
+          <Route exact path='/join-game/:gameid' element={<ProtectedRoute><PlayGame></PlayGame></ProtectedRoute>}></Route>
 
           <Route exact path='/loading-page' element={<ProtectedRoute><Loading></Loading></ProtectedRoute>}></Route>
 
