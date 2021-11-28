@@ -5,11 +5,11 @@ import WithMoveValidation from './ChessBoard';
 
 function PlayGame(props) {
     const location = useLocation();
-    //const params=useParams(); // can use it to get gameID
+    const params=useParams(); // can use it to get gameID
       return (
         <div>
           <div style={boardsContainer}>
-            <WithMoveValidation playerNames={{myname:location.state.userName.myName, oppName: location.state.userName.oppName}} orientation={location.state.color}/>
+            <WithMoveValidation gameId = {params.gameId} playerNames={{myname:location.state.userName.myName, oppName: location.state.userName.oppName}} orientation={location.state.color}/>
           </div>
         </div>
       );

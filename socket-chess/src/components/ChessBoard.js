@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Chess from "chess.js"; // import Chess from  "chess.js"(default) if recieving an error about new Chess() not being a constructor
+const socket = require("../connect/clientSocket.js").sock;
 
 import Chessboard from "chessboardjsx";
 
@@ -8,6 +9,7 @@ class HumanVsHuman extends Component {
   static propTypes = { children: PropTypes.func };
 
   state = {
+    gameId: this.props.gameId,
     fen: "start",
     // square styles for active drop square
     dropSquareStyle: {},
@@ -62,6 +64,7 @@ class HumanVsHuman extends Component {
   onDrop = ({ sourceSquare, targetSquare }) => {
     // see if the move is legal
     let move = this.game.move({
+      gameId: this.state.gameId,
       from: sourceSquare,
       to: targetSquare,
       promotion: "q" // always promote to a queen for example simplicity
@@ -107,6 +110,9 @@ class HumanVsHuman extends Component {
   };
 
   onSquareClick = (square) => {
+    if (this.game.turn() !== this.props.orientation[0].toLowerCase()) {
+      return;
+    }
     this.setState(({ history }) => ({
       squareStyles: squareStyling({ pieceSquare: square, history }),
       pieceSquare: square
@@ -126,6 +132,8 @@ class HumanVsHuman extends Component {
       history: this.game.history({ verbose: true }),
       pieceSquare: ""
     });
+    socket.emit("new move", move);
+    
   };
 
   onSquareRightClick = (square) =>
@@ -154,7 +162,7 @@ class HumanVsHuman extends Component {
 export default function WithMoveValidation(props) {
   return (
     <div>
-      <HumanVsHuman orientation={props.orientation}>
+      <HumanVsHuman orientation={props.orientation} gameId ={props.gameId}>
         {({
           orientation,
           position,
