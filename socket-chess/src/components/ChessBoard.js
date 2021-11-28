@@ -3,7 +3,7 @@ import wavurl from '../assets/audio_move.wav'
 import PropTypes from "prop-types";
 import Chess from "chess.js"; // import Chess from  "chess.js"(default) if recieving an error about new Chess() not being a constructor
 import Chessboard from "chessboardjsx";
-import { Header, Modal } from "semantic-ui-react";
+import { Button, Header, Modal } from "semantic-ui-react";
 import axios from "axios";
 const socket = require("../connect/clientSocket.js").sock;
 
@@ -210,14 +210,16 @@ class HumanVsHuman extends Component {
     //console.log(this.state);
     const { fen, dropSquareStyle, squareStyles } = this.state;
     return (<React.Fragment>
-      <Modal open={this.state.gameOver}> 
-          <Modal.Description>
-            <Header>
+      <Modal open={this.state.gameOver} size="large"> 
+        <Modal.Header style={{ textAlign: 'center'}}>Game Over!</Modal.Header>
+          <Modal.Content style={{ textAlign: 'center'}}>
               <p>
                 {this.state.result}
               </p>
-            </Header>
-          </Modal.Description>
+          </Modal.Content>
+          <Modal.Actions style={{ textAlign: 'center'}}>
+            <Button color="green" onClick={event => window.location.href='/private-dashboard'}>Return to Dashboard</Button>
+          </Modal.Actions>
       </Modal>
       {this.props.children({
       squareStyles,

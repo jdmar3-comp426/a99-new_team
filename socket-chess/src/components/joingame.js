@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
+import { Button, Form, FormField, FormGroup, Segment, Icon } from "semantic-ui-react";
 const socket = require("../connect/clientSocket.js").sock;
 
 function JoinGame(){
@@ -36,13 +37,25 @@ function JoinGame(){
     if(!start || (color==='' && oppName==='')){
         return(
             <div>
-              <form className="ui form">
-                <label>Game ID</label>
-                <input id='gameId' placeholder="Enter a Game ID to join" onChange={(event)=>setGameId(event.target.value)}></input>
-        
-                <label>Join Game</label>
-                <button onClick={(event)=>{handleJoinGame(event)}}>Start</button>
-              </form>
+              <Segment  basic style={{ display: 'flex', justifyContent: 'center'}}>
+                <Form size='huge'>
+                  <div style={{ textAlign: 'center', paddingBottom: '15px'}}>
+                    <Icon name="chess" size="big"></Icon>
+                  </div>
+                  <FormGroup style={{ justifyContent: 'center', textAlign: 'center'}}>
+                    <FormField>
+                      <label>Game ID</label>
+                      <input id='gameId' placeholder="Enter a Game ID to join" onChange={(event)=>setGameId(event.target.value)}></input>
+                    </FormField>
+                  </FormGroup>
+                  <FormGroup style={{ justifyContent: 'center', textAlign: 'center'}}> 
+                    <FormField>
+                      <label>Join Game</label>
+                      <Button fluid color='teal'onClick={(event)=>{handleJoinGame(event)}}>Join</Button>
+                    </FormField>
+                  </FormGroup>
+                </Form>
+              </Segment>
             </div>
           );
     }
