@@ -28,7 +28,8 @@ class HumanVsHuman extends Component {
       history: [],
       updateDatabase: false,
       gameOver: false,
-      result: 'ongoing'
+      result: 'ongoing',
+      oppResign: false
     };
   }
 
@@ -79,6 +80,13 @@ class HumanVsHuman extends Component {
     this.game = new Chess();
     this.audio= new Audio(wavurl);
     //this.audio.play();
+
+    socket.on("opp resign", (id)=>{
+        if(id===socket.id)
+          return;
+        this.setState({gameOver:true, result: "YOU WIN!",oppResign:true,updateDatabase:true});
+      });
+
     socket.on("opponent move", (oppMove)=>{
       this.game.move({from: oppMove.move.from, to:oppMove.move.to, promotion:oppMove.move.promotion});
       this.setState({
@@ -243,6 +251,12 @@ class HumanVsHuman extends Component {
       squareStyles: { [square]: { backgroundColor: "deepPink" } }
     });
 
+  handleResignation =(event)=>{
+    event.preventDefault();
+    socket.emit('resign',this.state.gameId);   
+    this.setState({gameOver:true, result: "YOU LOSE!",oppResign:false,updateDatabase:true});
+  }
+
   render() {
     //console.log(this.state);
     const { fen, dropSquareStyle, squareStyles } = this.state;
@@ -251,7 +265,7 @@ class HumanVsHuman extends Component {
         <Modal.Header style={{ textAlign: 'center'}}>Game Over!</Modal.Header>
           <Modal.Content style={{ textAlign: 'center'}}>
               <p>
-                {this.state.result}
+                {(this.state.oppResign)?(this.state.result +"     By Resignation"):this.state.result}
               </p>
           </Modal.Content>
           <Modal.Actions style={{ textAlign: 'center'}}>
@@ -269,7 +283,11 @@ class HumanVsHuman extends Component {
       onDragOverSquare: this.onDragOverSquare,
       onSquareClick: this.onSquareClick,
       onSquareRightClick: this.onSquareRightClick
-    })} 
+    })}
+
+    <div style={{ paddingTop: '2rem'}}>
+      <Button color="red" onClick={(event)=>this.handleResignation(event)}>Resign</Button>
+    </div>
     </React.Fragment>);
   }
 }

@@ -48,7 +48,7 @@ function Login(props){
                                     <FormField width={8}>
                                         <label>Password : </label>
                                         <input 
-                                            type="text" 
+                                            type="Password" 
                                             id="password" 
                                             placeholder="Password" 
                                             onChange = {(event) => setPassword(event.target.value)}>

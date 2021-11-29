@@ -67,7 +67,7 @@ function DashBoard(props){
                     <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {data.winsAsWhite}</h2>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
-                <Button basic color="green" onClick={handleNewGame}>Click for New Game</Button>
+                <Button basic color="green" onClick={handleNewGame}>Click to Start a New Game</Button>
                < Button color="green" onClick={handleJoinGame}>Click to Join a game </Button>
             </div>
         </div>
