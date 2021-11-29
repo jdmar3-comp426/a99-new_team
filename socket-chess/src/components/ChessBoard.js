@@ -285,7 +285,7 @@ class HumanVsHuman extends Component {
       onSquareRightClick: this.onSquareRightClick
     })}
 
-    <div style={{ paddingTop: '2rem'}}>
+    <div style={{ paddingTop: '2rem', textAlign: 'center'}}>
       <Button color="red" onClick={(event)=>this.handleResignation(event)}>Resign</Button>
     </div>
     </React.Fragment>);

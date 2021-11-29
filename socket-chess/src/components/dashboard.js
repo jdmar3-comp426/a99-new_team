@@ -54,17 +54,21 @@ function DashBoard(props){
                 </div>
                 
             </Segment>
-
             <div style={{ textAlign: 'center' }}>
-                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins: {data.winsAsBlack + data.winsAsWhite}</h2>
-                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Losses: {data.lossesAsBlack + data.lossesAsWhite}</h2>
+                <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Elo Rating: {data.eloRating}</h2>
+                <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Draws as Black: {data.drawsAsBlack}</h2>
+                <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Draws as White: {data.drawsAsWhite}</h2>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+                    <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Wins: {data.winsAsBlack + data.winsAsWhite}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Losses: {data.lossesAsBlack + data.lossesAsWhite}</h2>
                     {(data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite + data.drawsAsBlack + data.drawsAsWhite) === 0 ? (
-                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: - </h2>
+                        <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Win Percentage: - </h2>
                     ) : (
-                        <h2 style={{ display: 'inline-block', padding: '20px' }}>Win Percentage: {((data.winsAsBlack + data.winsAsWhite) / (data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite+data.drawsAsBlack + data.drawsAsWhite)*100)}%</h2>
+                        <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Win Percentage: {((data.winsAsBlack + data.winsAsWhite) / (data.winsAsBlack + data.winsAsWhite + data.lossesAsBlack + data.lossesAsWhite+data.drawsAsBlack + data.drawsAsWhite)*100)}%</h2>
                     )}
-                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as Black: {data.winsAsBlack}</h2>
-                    <h2 style={{ display: 'inline-block', padding: '20px' }}>Wins as White: {data.winsAsWhite}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Wins as Black: {data.winsAsBlack}</h2>
+                    <h2 style={{ display: 'inline-block', padding: '20px', margin: 'auto' }}>Wins as White: {data.winsAsWhite}</h2>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Button basic color="green" onClick={handleNewGame}>Click to Start a New Game</Button>

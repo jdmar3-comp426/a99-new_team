@@ -13,9 +13,13 @@ function PlayGame(props) {
     
       return (
         <div>
+          <h2 style={{ textAlign: 'center' }}>{location.state.userName.myName}</h2>
+        <div>
           <div style={boardsContainer}>
             <WithMoveValidation gameId = {params.gameid} playerNames={{myName:location.state.userName.myName, oppName: location.state.userName.oppName}} orientation={location.state.color}/>
           </div>
+        </div>
+        <h2 style={{ textAlign: 'center' }}>{location.state.userName.oppName}</h2>
         </div>
       );
     }
