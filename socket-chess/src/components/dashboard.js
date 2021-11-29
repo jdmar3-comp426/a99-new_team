@@ -48,7 +48,7 @@ function DashBoard(props){
             </Segment>
             
             <Segment vertical clearing style={{ textAlign: 'center', display: 'flex', justifyContent: 'center'}}>
-                <h2 style={{ marginLeft: 'auto', paddingLeft: '10rem'}}>Welcome to Your DashBoard, {state.username}</h2>
+                <h2 style={{ marginLeft: 'auto', paddingLeft: '18rem'}}>Welcome to Your DashBoard, {state.username}</h2>
                 <div style={{ marginLeft: 'auto', paddingRight: '1rem'}}>
                     <Button color="red" onClick={handleClick} style={{  }}>Log Out</Button>
                     <Button basic color="red">Delete Account</Button>
