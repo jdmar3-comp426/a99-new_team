@@ -40,6 +40,13 @@ function DashBoard(props){
         fetchData();        
     },[]);
 
+    function handleDelete(event){
+        event.preventDefault();
+        axios.delete('http://localhost:5000/app/deleteUserData/'+state.username);
+        auth.LogOut(()=>{navigate('/')});
+        alert(" Your account has been deleted");
+    }
+
     return (
         <div>
             <Segment inverted color="blue" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignContent: 'spaceBetween'}}>
@@ -51,7 +58,7 @@ function DashBoard(props){
                 <h2 style={{ marginLeft: 'auto', paddingLeft: '18rem'}}>Welcome to Your DashBoard, {state.username}</h2>
                 <div style={{ marginLeft: 'auto', paddingRight: '1rem'}}>
                     <Button color="red" onClick={handleClick} style={{  }}>Log Out</Button>
-                    <Button basic color="red">Delete Account</Button>
+                    <Button basic color="red" onClick={(event)=>{handleDelete(event)}}>Delete Account</Button>
                 </div>
                 
             </Segment>

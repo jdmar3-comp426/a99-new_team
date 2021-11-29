@@ -29,24 +29,12 @@ const serverSocket = socket(server, {
 	}
   });
 
-// READ (HTTP method GET) at root endpoint /app/
-app.get("/app/", (req, res, next) => {
-    res.json({"message":"Your API is working!"});
-	res.status(200);
-});
-
 // READ a list of all users (HTTP method GET) at endpoint /app/users/
 app.get("/app/users", (req, res) => {	
 	const stmt = db.prepare("SELECT * FROM userinfo").all();
 	res.status(200).json(stmt);
 });
 
-// UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
-app.patch("/app/update/user/:id",(req,res)=>{
-	const stmt = db.prepare("UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?").run(req.body.user,md5(req.body.pass),req.params.id);
-	res.status(201).json({"message":"1 record updated: ID %ID% (200)".replace("%ID%",req.params.id)});
-
-})
 
 // // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
 // app.delete("/app/delete/:id",(req,res)=>{
@@ -113,6 +101,13 @@ app.patch("/app/updateUserData/:userName",(req,res)=>{
 		res.status(401).json({msg:"Invalid User"});
 	}
 });
+
+
+// DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
+app.delete("/app/deleteUserData/:userName",(req,res)=>{
+	const stmt = db.prepare("DELETE FROM userinfo WHERE user = ?").run(req.params.userName);
+	res.status(201).json({"message":"1 record deleted: UserName %ID% (200)".replace("%ID%",req.params.userName)});
+})
 
 // Default response for any other request
 app.use(function(req, res){
