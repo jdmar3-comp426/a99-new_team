@@ -41,23 +41,23 @@ class HumanVsHuman extends Component {
       if(this.state.result==='YOU LOSE!'){
         update.eloRating=-7;
         if(this.props.orientation==='white')
-          update.lossesAsWhite='1';
+          update.lossesAsWhite=1;
         else
-          update.lossesAsBlack='1';
+          update.lossesAsBlack=1;
       }
       else if(this.state.result==='YOU WIN!'){
         update.eloRating=7;
         if(this.props.orientation==='white')
-          update.winsAsWhite='1';
+          update.winsAsWhite=1;
         else
-          update.winsAsBlack='1';
+          update.winsAsBlack=1;
       }
       else{
         update.eloRating=2;
         if(this.props.orientation==='white')
-          update.drawsAsWhite='1';
+          update.drawsAsWhite=1;
         else
-          update.drawsAsBlack='1';
+          update.drawsAsBlack=1;
       }
       
         const handleUpdate= async () =>{
