@@ -255,7 +255,7 @@ class HumanVsHuman extends Component {
               </p>
           </Modal.Content>
           <Modal.Actions style={{ textAlign: 'center'}}>
-            <Button color="green" onClick={event => window.location.href='/private-dashboard'}>Return to Dashboard</Button>
+            <Button color="green" onClick={event => {socket.emit('gameOver'); window.location.href='/private-dashboard'}}>Return to Dashboard</Button>
           </Modal.Actions>
       </Modal>
       {this.props.children({
