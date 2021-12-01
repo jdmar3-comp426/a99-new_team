@@ -4,7 +4,7 @@
 Socket-Chess: An app that allows you to play a game of chess online with a friend.
 
 ## Demo
-<iframe width="560" height="315" src="https://www.youtube.com/embed/u2VNq1Cq4mg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Socket Chess Demo](https://img.youtube.com/vi/u2VNq1Cq4mg/0.jpg)](https://www.youtube.com/watch?v=u2VNq1Cq4mg)
 
 ## Installation Requirements:
 - Node.js
