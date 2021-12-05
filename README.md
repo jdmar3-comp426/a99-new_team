@@ -20,25 +20,8 @@ Socket-Chess: An app that allows you to play a game of chess online with a frien
 
 ## Run Instructions
 1. Download/Clone repo
-```
-git clone https://github.com/jdmar3-comp426/a99-new_team.git
-```
 2. Cd into the 'backend' and 'socket-chess' folders and run 'npm install' to make sure you have the dependencies dowloaded. 
-```
-cd a99-new_team/backend
-npm install
-cd ../socket-chess
-npm install
-```
 3. Open two terminals. On one of them cd into the 'backend' folder and run 'npm start' to start the server.
-```
-cd ../backend
-npm start
-```
 4. On the other cd into the 'socket-chess' folder and run 'npm start' to serve up the frontend.
-```
-cd a99-new_team/socket-chess
-npm start
-```
 5. Open two incognito windows with the url for the frontend ('http://localhost:3000/'). This is important so you can simulate playing a game of chess between two users through the app. 
 6. Now you can register 2 users, login and play chess!
